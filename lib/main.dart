@@ -40,9 +40,9 @@ class Get {
   static get currentState => navigatorKey.currentState;
 }
 
-//02:20
+ //02:20
 
-//Ndk is a tool which convert the dart code in to the c/c++ language
+ //Ndk is a tool which convert the dart code in to the c/c++ language
 //according to the processor type (32-bit,64-bit)
 //then the NDK generate the .os files ,
 //this .os files get tunes when the app is opened by the Android os

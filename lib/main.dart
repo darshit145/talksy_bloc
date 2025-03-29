@@ -16,7 +16,7 @@ void main() async {
     runApp(MyApp());
   });
 }
-//darshit
+//darshit Fachara
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -52,7 +52,8 @@ class Get {
 //NDK compiles C/C++ code into .so files, which are loaded by the app and executed by
 // the Android OS within the app's sandbox, without root permissions.
 
-//today i have run the project storybook in the IOS platform learn about pod and Xcode,how to change the pod version and can change the Minimum Deployment target
+//today i have run the project storybook in the IOS platform learn about pod and Xcode,
+// how to change the pod version and can change the Minimum Deployment target
 
 
 //taday i have Done Some Minor Changes in the App like font and alignment,Specially the Search Functionality

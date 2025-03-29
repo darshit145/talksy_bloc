@@ -40,7 +40,7 @@ class Get {
   static get currentState => navigatorKey.currentState;
 }
 
- //02:20
+ //this is the minor changes fron the A 
 
  //Ndk is a tool which convert the dart code in to the c/c++ language
 //according to the processor type (32-bit,64-bit)

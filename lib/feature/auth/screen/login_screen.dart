@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:talksy_app/common/common_obj.dart';
 import 'package:talksy_app/feature/auth/screen/controller/email_login_controller.dart';
 import '../../../common/bordr_button.dart';
 import '../../../common/material_button.dart';
@@ -17,6 +18,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(CommonObj.loginModel.newUser.uMessaging);
+      },),
       backgroundColor: Colors.white,
       appBar: UniversalAppbarView.getAppBar(
           title: "Welcome", subTitle: "Choose how you want to continue"),

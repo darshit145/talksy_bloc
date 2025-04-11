@@ -1,12 +1,11 @@
 class  AppConstSP{
-  static const String themeSP="get_app_theme";
 
-
+  //on boarding navigation (true) if false skip
   static const String onBoardingNavigation="on_boarding_navigation";
+
+  //user login status if false go to login page
   static const String loginStatus="set_this_login_status";
 
-  //
-  static const String loginUserTocken="login_user_tocken";
-
+  //user Email Address
   static const String uaerEmail="local_user_email";
 }

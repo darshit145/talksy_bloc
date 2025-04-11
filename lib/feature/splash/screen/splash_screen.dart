@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:talksy_app/get_it.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import '../../../util/font_family.dart';
@@ -11,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() => context.read<SplashBloc>().add(InitSplash(context: context),),);
+    Future.microtask(() => context.read<SplashBloc>().add(InitSplash(context: context,pref: it()),),);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(

@@ -4,5 +4,6 @@ part of 'splash_bloc.dart';
 sealed class SplashEvent {}
 final class InitSplash extends SplashEvent{
   BuildContext context;
-  InitSplash({required this.context});
+  SharedPreferences pref;
+  InitSplash({required this.context,required this.pref});
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343920377818",
+    "project_id": "talksy-app-a4a48",
+    "storage_bucket": "talksy-app-a4a48.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343920377818:android:b29765e49fb5faf8300ae3",
+        "android_client_info": {
+          "package_name": "com.example.talksy_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5PxpGc3C4sNCtWnEU7DLu2vW8dC8v9Cc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

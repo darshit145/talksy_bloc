@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:talksy_app/feature/auth/screen/controller/email_login_controller.dart';
 import '../../../common/bordr_button.dart';
 import '../../../common/material_button.dart';
 import '../../../common/universal_appbar_view.dart';
@@ -27,55 +28,58 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               spacing: 20,
               children: [
-                SizedBox(
-                  height: 53,
-                  width: double.infinity,
-                  child: MaterialButtonView(
-                    text: "Sign up",
-                    callbackAction: () {
-                      Navigator.pushNamed(
-                          context, StringConst.routRegistraationScreen);
-                    },
-                  ),
-                ),
+                // SizedBox(
+                //   height: 53,
+                //   width: double.infinity,
+                //   child: MaterialButtonView(
+                //     text: "Sign up",
+                //     callbackAction: () {
+                //       Navigator.pushNamed(
+                //           context, StringConst.routRegistraationScreen);
+                //     },
+                //   ),
+                // ),
+                // BordrButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(
+                //         context, StringConst.routLoginScreenMail);
+                //   },
+                //   btnChild: Text(
+                //     "Login",
+                //     style: TextStyle(
+                //       fontFamily: FontFamily.robotoSimple,
+                //       color: Colors.black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w600,
+                //     ),
+                //   ),
+                // ),
+
+                // Row(
+                //   spacing: 5,
+                //   children: [
+                //     Expanded(
+                //       child: Divider(
+                //         color: Colors.grey,
+                //         thickness: 1,
+                //       ),
+                //     ),
+                //     Text(
+                //       "Or continue with",
+                //       style: TextStyle(color: Color(0xFF6B7280)),
+                //     ),
+                //     Expanded(
+                //       child: Divider(
+                //         color: Colors.grey,
+                //         thickness: 1,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 BordrButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, StringConst.routLoginScreenMail);
-                  },
-                  btnChild: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontFamily: FontFamily.robotoSimple,
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Row(
-                  spacing: 5,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                    Text(
-                      "Or continue with",
-                      style: TextStyle(color: Color(0xFF6B7280)),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                BordrButton(
-                  onPressed: () {
+                    // print("object");
+                    loginViaGmail(context);
                     // context.read<AuthController>().loginViaGmail(context);
                   },
                   btnChild: BordrButton.googleLoginButton(),

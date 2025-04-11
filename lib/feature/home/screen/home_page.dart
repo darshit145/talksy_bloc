@@ -29,6 +29,9 @@ class HomePage extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterSocketDemo(),));
+        },),
         backgroundColor: ColorConst.getWhite(context),
         appBar: AppBar(
           backgroundColor: ColorConst.getWhite(context),
@@ -127,3 +130,109 @@ class HomePage extends StatelessWidget {
   }
 }
 
+
+class FlutterSocketDemo extends StatefulWidget {
+  const FlutterSocketDemo({super.key});
+
+  @override
+  State<FlutterSocketDemo> createState() => _FlutterSocketDemoState();
+}
+
+class _FlutterSocketDemoState extends State<FlutterSocketDemo> {
+  late IO.Socket socket;
+  final TextEditingController _messageController = TextEditingController();
+  final List<String> _messages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    connectToSocket();
+  }
+
+  void connectToSocket() {
+    socket = IO.io(
+      'http://192.168.1.10:5000', // 👉 Replace with your laptop's IP address
+      IO.OptionBuilder()
+          .setTransports(['websocket']) // for Flutter or Dart VM
+          .disableAutoConnect()
+          .build(),
+    );
+
+    socket.connect();
+
+    socket.onConnect((_) {
+      print('Connected ✅ Socket ID: ${socket.id}');
+      socket.emit('dododo', socket.id); // Send your ID to server
+    });
+
+    socket.on('message', (data) {
+      print('Received message: $data');
+      setState(() {
+        _messages.add(data.toString());
+      });
+    });
+
+    socket.onDisconnect((_) {
+      print('Disconnected ❌');
+    });
+  }
+
+  void sendMessage() {
+    String msg = _messageController.text.trim();
+    if (msg.isNotEmpty) {
+      // Example: sending message from me (my id) to me for testing
+      socket.emit('user-message', [msg, socket.id, "qV9VcjQ-0oxyt1jjAAAB","monday","ok"]);
+      _messageController.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    socket.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter WebSocket Demo'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_messages[index]),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter message',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: sendMessage,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

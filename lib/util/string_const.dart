@@ -19,7 +19,7 @@ class StringConst{
   static const String ERROR="ERROR";
 
   //API
-  static const String baseUrl="https://ce42-2402-a00-192-75c3-ac60-d53e-5f7d-676b.ngrok-free.app/";
+  static const String baseUrl="https://talksy-api.onrender.com/";
   //get
   static const String listAllUser="api/list_all_user/";
   //post

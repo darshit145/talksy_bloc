@@ -18,9 +18,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(CommonObj.loginModel.newUser.uMessaging);
-      },),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      //   print(CommonObj.loginModel!.newUser.uMessaging);
+      // },),
       backgroundColor: Colors.white,
       appBar: UniversalAppbarView.getAppBar(
           title: "Welcome", subTitle: "Choose how you want to continue"),

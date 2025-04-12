@@ -12,7 +12,11 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    Future.microtask(() => context.read<SplashBloc>().add(InitSplash(context: context,pref: it()),),);
+    Future.microtask(
+      () => context.read<SplashBloc>().add(
+            InitSplash(context: context, pref: it()),
+          ),
+    );
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Stack(

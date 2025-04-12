@@ -8,4 +8,7 @@ class  AppConstSP{
 
   //user Email Address
   static const String uaerEmail="local_user_email";
+
+  //this value Store the user login res
+  static const String userLoginRes="user_login_res";
 }

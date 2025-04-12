@@ -2,14 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy_app/common/common_obj.dart';
+import 'package:talksy_app/get_it.dart';
 
+import '../../../common/cash_image.dart';
 import '../../../main.dart';
+import '../../../util/app_constantSP.dart';
 import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
 import '../../../util/images.dart';
 import '../../../util/string_const.dart';
+import '../../auth/screen/controller/google_auth.dart';
 
-void logOutAction() {
+void logOutAction(SharedPreferences sp) {
   CupertinoAlertDialog cupertinoAlertDialog = CupertinoAlertDialog(
     title: Text("Logout",
       style: TextStyle(
@@ -37,6 +43,10 @@ void logOutAction() {
       ),
       MaterialButton(
         onPressed: () {
+          CommonObj.loginModel=null;
+          final AuthService authService = AuthService();
+          authService.logOut();
+          sp.setBool(AppConstSP.loginStatus,true);
           Navigator.pushNamedAndRemoveUntil(Get.context!, StringConst.routAuthScreen, (route) => false);
         },
         child: Text(
@@ -68,7 +78,9 @@ class UserProfile extends StatelessWidget {
     ProfileModel(title: "Help & Support", imagePath: Images.qnaIcon),
     ProfileModel(
         title: "Logout",
-        voidCallbackActio: logOutAction,
+        voidCallbackActio: () {
+          logOutAction(it());
+        },
         imagePath: Images.logoutIcon),
   ];
 
@@ -106,13 +118,10 @@ class UserProfile extends StatelessWidget {
               CircleAvatar(
                 radius: 43,
                 backgroundColor: ColorConst.getBlack(context),
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Color(0xFF4B5563),
-                ),
+                child: CashImage(circleRedius: 40,getImage: CommonObj.loginModel!.newUser.uPhoto)
               ),
               Text(
-                "Alex Johnson",
+                CommonObj.loginModel!.newUser.uName,
                 style: TextStyle(
                     fontSize: 20,
                     color: ColorConst.getBlack(context),
@@ -120,10 +129,10 @@ class UserProfile extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
               Text(
-                "Product Designer",
+                CommonObj.loginModel!.newUser.uEmail,
                 style: TextStyle(
                     fontSize: 14,
-                    color: ColorConst.getSecondryWhite(context),
+                    color: ColorConst.getBlack(context),
                     fontFamily: FontFamily.robotoSimple,
                     fontWeight: FontWeight.w400),
               )

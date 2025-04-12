@@ -24,6 +24,7 @@ Future<void> loginViaGmail(BuildContext context) async {
     ///Set the SharedPreferances NO LOGIN screen
     //THis Becomes True When The Api Response Get Success
     // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) => HomeScreen(), ));
+    SharedPreferences sp = await SharedPreferences.getInstance();
     RequestHandler.makePostRequest(StringConst.baseUrl + StringConst.loginUrl, {
       "u_email": userCredential.user?.email,
       "u_name": userCredential.user?.displayName,
@@ -34,12 +35,13 @@ Future<void> loginViaGmail(BuildContext context) async {
         if (value == StringConst.ERROR) {
           showCupertinoSnackbar("Something Went Wrong");
         } else {
+          sp.setBool(AppConstSP.loginStatus, false);
+          sp.setString(AppConstSP.userLoginRes, value);
           CommonObj.loginModel = userFromJson(value);
           Navigator.pushReplacementNamed(Get.context, StringConst.routHomePage);
         }
       },
     );
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setBool(AppConstSP.loginStatus, false);
+
   }
 }

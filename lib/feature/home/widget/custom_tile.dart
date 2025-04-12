@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy_app/common/cash_image.dart';
 import '../../../get_it.dart';
 import '../../../util/app_constantSP.dart';
 import '../../../util/color_const.dart';
@@ -34,8 +35,10 @@ class CustomTile extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => ChatPage(
                   sp: it(),
+                  cloudUserPhoto: photoUrl,
                   sender: email.split('@')[0],
-                  tableName: generateChatTableName(email, subTitleText),
+                  cloudUsername: titleText,
+                  // tableName: generateChatTableName(email, subTitleText),
                   // tableName: generateChatTableName("dfachara8", "dfachara8"),
                   reciverTocken: notificationTck,
                 ),
@@ -46,10 +49,7 @@ class CustomTile extends StatelessWidget {
           child: Row(
             spacing: 10,
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage: NetworkImage(photoUrl),
-              ),
+              CashImage(circleRedius: 24, getImage: photoUrl),
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +80,7 @@ class CustomTile extends StatelessWidget {
                       Text(
                         "Yesterday",
                         style: TextStyle(
-                            color: ColorConst.getSecondryWhite(context),
+                            color: ColorConst.getBlack(context),
                             fontFamily: FontFamily.robotoSimple,
                             fontSize: 13),
                       )
@@ -105,9 +105,9 @@ class CustomTile extends StatelessWidget {
   }
 }
 
-String generateChatTableName(String userId1, String userId2) {
-  userId1 = userId1.split('@')[0];
-  userId2 = userId2.split('@')[0];
-  List<String> sortedIds = [userId1, userId2]..sort();
-  return "${sortedIds[0]}_${sortedIds[1]}";
-}
+// String generateChatTableName(String userId1, String userId2) {
+//   userId1 = userId1.split('@')[0];
+//   userId2 = userId2.split('@')[0];
+//   List<String> sortedIds = [userId1, userId2]..sort();
+//   return "${sortedIds[0]}_${sortedIds[1]}";
+// }

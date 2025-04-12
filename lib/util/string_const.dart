@@ -22,6 +22,8 @@ class StringConst{
   static const String baseUrl="https://talksy-api.onrender.com/";
   //get
   static const String listAllUser="api/list_all_user/";
+  static const String listImpUser="api/listchat/";
+  static const String list10Users="api/list_all_user_limt/";
   //post
   static const String loginUrl="api/login";
 

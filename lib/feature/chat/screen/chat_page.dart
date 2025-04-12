@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy_app/common/cash_image.dart';
 import '../../../util/app_constantSP.dart';
 import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
@@ -17,19 +18,20 @@ import '../widget/sender_chat.dart';
 class ChatPage extends StatelessWidget {
   final List chatList = [];
   final String reciverTocken;
-  final String tableName;
+  final String cloudUsername;
   final SharedPreferences sp;
   final String sender;
+  final String cloudUserPhoto ;
 
-  ChatPage({super.key,required  this.sender,required this.sp, required this.tableName,required this.reciverTocken});
+  ChatPage({super.key,required this.cloudUserPhoto,required  this.sender,required this.sp, required this.cloudUsername,required this.reciverTocken});
   final DatabaseHelper2 databaseHelper2=DatabaseHelper2.instance;
   @override
   Widget build(BuildContext context) {
-    Future.microtask(
-      () {
-        databaseHelper2.fetchAndUpdateStream(tableName);
-      },
-    );
+    // Future.microtask(
+    //   () {
+    //     databaseHelper2.fetchAndUpdateStream(tableName);
+    //   },
+    // );
     return Scaffold(
       backgroundColor: ColorConst.getWhite(context),
       appBar: AppBar(
@@ -38,7 +40,7 @@ class ChatPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: SafeArea(
           child: Text(
-            "ChatApp",
+            cloudUsername,
             style: TextStyle(
                 fontFamily: FontFamily.schyler,
                 color: ColorConst.getBlack(context),
@@ -95,10 +97,7 @@ class ChatPage extends StatelessWidget {
                           builder: (context) => RemoteUser(),
                         ));
                   },
-                  child: CircleAvatar(
-                    backgroundColor: Color(0xFFD1D5DB),
-                    radius: 17,
-                  ),
+                  child: CashImage(circleRedius: 17, getImage:cloudUserPhoto)
                 )
               ],
             ),

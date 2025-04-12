@@ -1,37 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import "package:http/http.dart" as http;
+import 'package:shimmer/shimmer.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:talksy_app/common/cash_image.dart';
+import 'package:talksy_app/common/common_obj.dart';
 import 'package:talksy_app/get_it.dart';
-
 import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
 import '../../../util/string_const.dart';
 import '../../userprofile/screen/user_profile.dart';
+import '../controller/home_bloc.dart';
 import '../widget/custom_tile.dart';
 import '../widget/story_view.dart';
 
-
 class HomePage extends StatelessWidget {
- final FocusNode focusNode=FocusNode();
- TextEditingController textEditingController=TextEditingController();
+  final FocusNode focusNode = FocusNode();
+  TextEditingController textEditingController = TextEditingController();
 
-    HomePage({super.key});
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     // focusNode.unfocus();
+    Future.microtask(
+          () => context.read<HomeBloc>().add(
+        ListImpUser(),
+      ),
+    );
     return GestureDetector(
       onTap: () {
         textEditingController.clear();
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterSocketDemo(),));
-        },),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // print(CommonObj.loginModel!.newUser.id);
+            Future.microtask(
+                  () => context.read<HomeBloc>().add(
+                ListImpUser(),
+              ),
+            );
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterSocketDemo(),));
+          },
+        ),
         backgroundColor: ColorConst.getWhite(context),
         appBar: AppBar(
           backgroundColor: ColorConst.getWhite(context),
@@ -64,14 +80,15 @@ class HomePage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile(),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProfile(),
+                    ));
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  backgroundColor: Color(0xFFD1D5DB),
-                  radius: 17,
-                ),
+                child: CashImage(circleRedius: 17,getImage:CommonObj.loginModel!.newUser.uPhoto)
               ),
             )
           ],
@@ -85,8 +102,7 @@ class HomePage extends StatelessWidget {
                 CupertinoSearchTextField(
                   focusNode: focusNode,
                   controller: textEditingController,
-                  onChanged: (val) {
-                  },
+                  onChanged: (val) {},
                   itemColor: Colors.black,
                   style: TextStyle(color: Colors.black),
                   decoration: BoxDecoration(
@@ -94,33 +110,71 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 StoryView(),
-
-                ListView.separated(
-                  padding: EdgeInsets.all(0),
-
-                  separatorBuilder: (context, index) {
-                    return SizedBox(
-                      height: 2,
-                      child: Divider(
-                        color: ColorConst.getDeviderColor(context),
-                        thickness: 1,
-                      ),
+                BlocBuilder<HomeBloc,HomeState>(builder: (context, state) {
+                  if(state.userList.isEmpty){
+                    return  ListView.separated(
+                      padding: EdgeInsets.all(0),
+                      separatorBuilder: (context, index) {
+                        return SizedBox(
+                          height: 2,
+                          child: Divider(
+                            color: ColorConst.getDeviderColor(context),
+                            thickness: 1,
+                          ),
+                        );
+                      },
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey.shade200,
+                              child:Container(
+                                width: double.infinity,
+                                height: 70,
+                                color: Colors.red,
+                              )
+                          ),
+                        );
+                      },
+                      itemCount: 8,
                     );
-                  },
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-
-                    return CustomTile(
-                      sp: it(),
-                      notificationTck: "value.listOfUsers.result[index].uMessaging",
-                      photoUrl: "value.listOfUsers.result[index].uPhoto",
-                      subTitleText:"value.listOfUsers.result[index].uEmail" ,
-                      titleText: "value.listOfUsers.result[index].uName",
-                    );
-                  },itemCount: 10,)
+                  }
+                  return ListView.separated(
+                    padding: EdgeInsets.all(0),
+                    separatorBuilder: (context, index) {
+                      return SizedBox(
+                        height: 2,
+                        child: Divider(
+                          color: ColorConst.getDeviderColor(context),
+                          thickness: 1,
+                        ),
+                      );
+                    },
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      if(index==state.userList.length-1){
+                        print("this is Called or${state.userList.length} and this is the index $index");
+                        context.read<HomeBloc>().add(List10Users());
+                      }
+                      return CustomTile(
+                        sp: it(),
+                        notificationTck:"value.g",
+                        photoUrl: state.userList[index].uPhoto,
+                        subTitleText:state.userList[index].uEmail,
+                        titleText: state.userList[index].uName,
+                      );
+                    },
+                    itemCount: state.userList.length,
+                  );
+                },)
               ],
             ),
           ),
@@ -129,7 +183,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
 
 class FlutterSocketDemo extends StatefulWidget {
   const FlutterSocketDemo({super.key});
@@ -181,7 +234,8 @@ class _FlutterSocketDemoState extends State<FlutterSocketDemo> {
     String msg = _messageController.text.trim();
     if (msg.isNotEmpty) {
       // Example: sending message from me (my id) to me for testing
-      socket.emit('user-message', [msg, socket.id, "qV9VcjQ-0oxyt1jjAAAB","monday","ok"]);
+      socket.emit('user-message',
+          [msg, socket.id, "qV9VcjQ-0oxyt1jjAAAB", "monday", "ok"]);
       _messageController.clear();
     }
   }
@@ -212,7 +266,8 @@ class _FlutterSocketDemoState extends State<FlutterSocketDemo> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
             child: Row(
               children: [
                 Expanded(

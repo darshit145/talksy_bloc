@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talksy_app/feature/splash/bloc/splash_bloc.dart';
 import 'package:talksy_app/rout/rout.dart';
 import 'package:talksy_app/util/string_const.dart';
+import 'feature/home/controller/home_bloc.dart';
 import 'feature/splash/screen/splash_screen.dart';
 import 'get_it.dart';
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -25,8 +26,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => SplashBloc()),
+        BlocProvider(create: (context) => HomeBloc()),
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          secondaryHeaderColor: Color(0xFF22C55E)
+        ),
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: StringConst.appName,

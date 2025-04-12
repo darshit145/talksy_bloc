@@ -8,6 +8,13 @@ class RequestHandler{
     if(result.statusCode==200){
       return result.body;
     }
+     return StringConst.ERROR;
+  }
+  static Future<String> makeAnGetRequest(String url)async{
+    var result=await http.get(Uri.parse(url),headers:{'Content-Type': 'application/json'},);
+    if(result.statusCode==200){
+      return result.body;
+    }
     return StringConst.ERROR;
   }
 }

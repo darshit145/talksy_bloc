@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talksy_app/common/common_obj.dart';
+import 'package:talksy_app/feature/auth/model/login_model.dart';
 import 'package:talksy_app/main.dart';
 import 'package:talksy_app/util/app_constantSP.dart';
 
@@ -14,17 +16,27 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc() : super(SplashInitial()) {
     on<InitSplash>(_initSplash);
   }
-  Future<void> _initSplash(InitSplash event,Emitter<SplashState> emit)async{
-    Future.delayed(Duration(seconds: 2)).then((value) {
-      if(event.pref.getBool(AppConstSP.onBoardingNavigation)??true){
-        //do not have to show the onboarding page
-        Navigator.pushReplacementNamed(Get.context, StringConst.routIntroScreen);
-      }else if(event.pref.getBool(AppConstSP.loginStatus)??true){
-        Navigator.pushReplacementNamed(Get.context, StringConst.routAuthScreen);
-      }else{
-        Navigator.pushReplacementNamed(Get.context, StringConst.routHomePage);
-      }
-
-    },);
+  Future<void> _initSplash(InitSplash event, Emitter<SplashState> emit) async {
+    Future.delayed(Duration(seconds: 2)).then(
+      (value) {
+        if (event.pref.getBool(AppConstSP.onBoardingNavigation) ?? true) {
+          //do not have to show the onboarding page
+          Navigator.pushReplacementNamed(
+              Get.context, StringConst.routIntroScreen);
+        } else if (event.pref.getBool(AppConstSP.loginStatus) ?? true) {
+          Navigator.pushReplacementNamed(
+              Get.context, StringConst.routAuthScreen);
+        } else {
+          String? responce=event.pref.getString(AppConstSP.userLoginRes);
+          if(responce!=null){
+            CommonObj.loginModel=userFromJson(responce);
+            Navigator.pushReplacementNamed(Get.context, StringConst.routHomePage);
+          }else{
+            Navigator.pushReplacementNamed(
+                Get.context, StringConst.routAuthScreen);
+          }
+        }
+      },
+    );
   }
 }

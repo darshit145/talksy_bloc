@@ -24,8 +24,10 @@ class StringConst{
   static const String listAllUser="api/list_all_user/";
   static const String listImpUser="api/listchat/";
   static const String list10Users="api/list_all_user_limt/";
+  static const String getAllTheUnreadedMsg="api/messages_all/";
   //post
   static const String loginUrl="api/login";
+  static const String sendMessage="api/send_msg";
 
 
   // static const String baseUrl="https://talksy-api.onrender.com/api/list_all_user/";

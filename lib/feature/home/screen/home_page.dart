@@ -37,17 +37,17 @@ class HomePage extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // print(CommonObj.loginModel!.newUser.id);
-            Future.microtask(
-                  () => context.read<HomeBloc>().add(
-                ListImpUser(),
-              ),
-            );
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterSocketDemo(),));
-          },
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     print(CommonObj.loginModel!.newUser.id);
+        //     // Future.microtask(
+        //     //       () => context.read<HomeBloc>().add(
+        //     //     ListImpUser(),
+        //     //   ),
+        //     // );
+        //     // Navigator.push(context, MaterialPageRoute(builder: (context) => FlutterSocketDemo(),));
+        //   },
+        // ),
         backgroundColor: ColorConst.getWhite(context),
         appBar: AppBar(
           backgroundColor: ColorConst.getWhite(context),
@@ -166,6 +166,7 @@ class HomePage extends StatelessWidget {
                       }
                       return CustomTile(
                         sp: it(),
+                        cloudUser: state.userList[index],
                         notificationTck:"value.g",
                         photoUrl: state.userList[index].uPhoto,
                         subTitleText:state.userList[index].uEmail,
@@ -291,3 +292,7 @@ class _FlutterSocketDemoState extends State<FlutterSocketDemo> {
     );
   }
 }
+
+
+///67fa79e84e431ff398af8d58 dfachara9
+///67fa79104e431ff398af8d32

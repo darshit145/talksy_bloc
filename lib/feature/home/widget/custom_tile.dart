@@ -6,7 +6,7 @@ import '../../../util/app_constantSP.dart';
 import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
 import '../../chat/screen/chat_page.dart';
-
+import '../domain/model/list_user.dart';
 
 class CustomTile extends StatelessWidget {
   final String titleText;
@@ -14,12 +14,14 @@ class CustomTile extends StatelessWidget {
   final String photoUrl;
   final SharedPreferences sp;
   final String notificationTck;
+  final User cloudUser;
   const CustomTile(
       {super.key,
       required this.sp,
       required this.notificationTck,
       required this.photoUrl,
       required this.titleText,
+      required this.cloudUser,
       required this.subTitleText});
 
   @override
@@ -36,6 +38,7 @@ class CustomTile extends StatelessWidget {
                 builder: (context) => ChatPage(
                   sp: it(),
                   cloudUserPhoto: photoUrl,
+                  cloudUser: cloudUser,
                   sender: email.split('@')[0],
                   cloudUsername: titleText,
                   // tableName: generateChatTableName(email, subTitleText),

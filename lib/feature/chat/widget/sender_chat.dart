@@ -13,7 +13,7 @@ class SenderChat extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         margin: EdgeInsets.only(left: 30),
         decoration: BoxDecoration(
             color: ColorConst.getBlack(context),
@@ -37,26 +37,36 @@ class SenderChat extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
-              spacing: 6,
               children: [
-                // Icon(
-                //   Icons.read_more,
-                //   size: 10,
-                //   color: ColorConst.getWhite(context),
-                // ),
-                Text(
-                  time,
-                  style: TextStyle(
-                      color: ColorConst.getWhite(context),
-                      fontSize: 8,
-                      fontFamily: FontFamily.robotoSimple,
-                      fontWeight: FontWeight.w300,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 0),
+                  child: Icon(Icons.access_time_rounded,color: Colors.white,size: 10,),
                 ),
+                // Text("data",style: TextStyle(color: Colors.red),)
               ],
             )
+            // Row(
+            //   mainAxisSize: MainAxisSize.min,
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   spacing: 6,
+            //   children: [
+            //     // Icon(
+            //     //   Icons.read_more,
+            //     //   size: 10,
+            //     //   color: ColorConst.getWhite(context),
+            //     // ),
+            //     // Text(
+            //     //   time,
+            //     //   style: TextStyle(
+            //     //       color: ColorConst.getWhite(context),
+            //     //       fontSize: 8,
+            //     //       fontFamily: FontFamily.robotoSimple,
+            //     //       fontWeight: FontWeight.w300,
+            //     //   ),
+            //     // ),
+            //   ],
+            // )
           ],
         ),
       ),

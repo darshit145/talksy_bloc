@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'model.dart';
+import 'package:talksy_app/feature/chat/domain/model/user_message.dart';
 
 // //Store the recent Watched Item at hear
 // class DateBaseHelper{
@@ -81,11 +81,13 @@ import 'model.dart';
 
 
 
-class DatabaseHelper2 {
-  static final DatabaseHelper2 instance = DatabaseHelper2._instance();
+
+//Store the recent Watched Item at hear
+class DateBaseHelper{
+  static final DateBaseHelper instance = DateBaseHelper._instance();
   static Database? _database;
 
-  DatabaseHelper2._instance();
+  DateBaseHelper._instance();
 
   Future<Database> get db async {
     _database ??= await initDb();
@@ -94,69 +96,48 @@ class DatabaseHelper2 {
 
   Future<Database> initDb() async {
     String databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'recent_view.db');
-    return await openDatabase(
-      path,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    String path = join(databasesPath, 'message.db');
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  Future<void> _onCreate(Database db, int version) async {
-    // Create initial tables if needed
+  Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS default_table (
+     CREATE TABLE  chat (
         cid INTEGER PRIMARY KEY, 
-        reciverId TEXT,
-        senderId TEXT,
-        message TEXT,
-        time TEXT
+        msg TEXT,
+        fromU TEXT,
+        toU TEXT,
+        dateSendingTime INTEGER,
+        readStatus TEXT,
+        day TEXT  
       )
-    ''');
+  ''');
   }
 
-  Future<void> createTableIfNotExists(String tableName) async {
-    final db = await instance.db;
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS $tableName (
-        cid INTEGER PRIMARY KEY, 
-        reciverId TEXT,
-        senderId TEXT,
-        message TEXT,
-        time TEXT
-      )
-    ''');
-  }
-
-  Future<int> insert(String tableName, Map<String, dynamic> data) async {
-    final db = await instance.db;
-    await createTableIfNotExists(tableName);
-    fetchAndUpdateStream(tableName);
-    return await db.insert(tableName, data);
-  }
-
-  Future<void> remove(String tableName, String column, String value) async {
-    final db = await instance.db;
-    await createTableIfNotExists(tableName); // Ensure table exists
-    await db.delete(tableName, where: '$column = ?', whereArgs: [value]);
-  }
-
-  Future<List<Map<String, dynamic>>> query(String tableName) async {
-    final db = await instance.db;
-    await createTableIfNotExists(tableName);
-    return await db.query(tableName);
-  }
-  final StreamController<List<Topic>> topicStreamController =
-  StreamController<List<Topic>>.broadcast();
 
 
-  Future<void> fetchAndUpdateStream(String tableName) async {
-    List<Topic> topics=[];
-    List<Map<String, dynamic>> maps= await query(tableName);
-    topics= maps.map((e) {
-      return Topic.fromMap(e);
-    },).toList();
-    topicStreamController.add(topics);
-    print("LLLLLLLLLLLLLLLLL$tableName");
+  Future<int> insertRecent(Message topic) async {
+    Database db = await instance.db;
+    return await db.insert('chat', topic.toMap());
   }
+
+  Future<void> removeBasedOnName(String nams)async{
+    Database db = await instance.db;
+    await db.delete('topics', where: 'topic_name = ?', whereArgs: [nams]);
+  }
+
+  Future<void> getRecent() async {
+    Database db = await instance.db;
+    List<Map<String, dynamic>> maps = await db.query('chat');
+    print(maps);
+  }
+
+  // Future<List<Message>> getRecent() async {
+  //   Database db = await instance.db;
+  //   List<Map<String, dynamic>> maps = await db.query('topics');
+  //   List<Message> topics=maps.map((e) {
+  //     return Message.fromMap(e);
+  //   }).toList();
+  //   return topics;
+  // }
 }

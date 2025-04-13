@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talksy_app/feature/splash/bloc/splash_bloc.dart';
 import 'package:talksy_app/rout/rout.dart';
 import 'package:talksy_app/util/string_const.dart';
+import 'feature/chat/controller/chat_bloc.dart';
 import 'feature/home/controller/home_bloc.dart';
 import 'feature/splash/screen/splash_screen.dart';
 import 'get_it.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => SplashBloc()),
         BlocProvider(create: (context) => HomeBloc()),
+        BlocProvider(create: (context) => ChatBloc()),
       ],
       child: MaterialApp(
         theme: ThemeData(

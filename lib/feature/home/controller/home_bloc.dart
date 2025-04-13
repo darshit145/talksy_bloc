@@ -6,6 +6,7 @@ import 'package:talksy_app/common/common_obj.dart';
 import 'package:talksy_app/common/request_handler.dart';
 import 'package:talksy_app/util/string_const.dart';
 
+import '../../chat/controller/chat_bloc.dart';
 import '../domain/model/list_user.dart';
 
 part 'home_event.dart';
@@ -35,6 +36,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _list10Users(List10Users event, Emitter<HomeState> emit) async {
+    ChatBloc chatBloc=ChatBloc();
+    chatBloc.add(GetAllMessage());
     String value = await RequestHandler.makeAnGetRequest(
         StringConst.baseUrl + StringConst.list10Users + noOfPage.toString());
     if (value != StringConst.ERROR && !isLastPage) {

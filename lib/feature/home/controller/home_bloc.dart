@@ -19,11 +19,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _listImpUser(ListImpUser event, Emitter<HomeState> emit) async {
+    ChatBloc chatBloc=ChatBloc();
+    chatBloc.add(GetAllMessage());
     String value = await RequestHandler.makeAnGetRequest(StringConst.baseUrl +
         StringConst.listImpUser +
         CommonObj.loginModel!.newUser.id);
-    print(value);
-    if (value != StringConst.ERROR) {
+     if (value != StringConst.ERROR) {
       Map<String, dynamic> data = jsonDecode(value);
       List<User> userList = List.generate(
           data["users"].length, (index) => User.fromJson(data["users"][index]));
@@ -36,8 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _list10Users(List10Users event, Emitter<HomeState> emit) async {
-    ChatBloc chatBloc=ChatBloc();
-    chatBloc.add(GetAllMessage());
+
     String value = await RequestHandler.makeAnGetRequest(
         StringConst.baseUrl + StringConst.list10Users + noOfPage.toString());
     if (value != StringConst.ERROR && !isLastPage) {

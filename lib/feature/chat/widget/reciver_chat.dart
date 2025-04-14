@@ -12,11 +12,12 @@ class ReciverChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 10,
       children: [
-        CashImage(circleRedius: 20, getImage:senderPhotoUrl),
-        Expanded(
+        CashImage(circleRedius: 17, getImage:senderPhotoUrl),
+        Flexible(
           child: Padding(
             padding: const EdgeInsets.only(right: 30),
             child: Container(

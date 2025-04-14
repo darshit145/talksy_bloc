@@ -30,6 +30,7 @@ class TextFieldView extends StatelessWidget {
               fontFamily: FontFamily.robotoSimple),
         ),
         MyTextField(
+          maxLength: 8,
           hintText: hintText,
           controller: controller,
           obscureText: title.contains("Pass"),

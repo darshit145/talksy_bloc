@@ -14,6 +14,7 @@ import '../../../util/font_family.dart';
 import '../../../util/images.dart';
 import '../../../util/string_const.dart';
 import '../../auth/screen/controller/google_auth.dart';
+import '../../chat/domain/model/database_helper.dart';
 
 void logOutAction(SharedPreferences sp) {
   CupertinoAlertDialog cupertinoAlertDialog = CupertinoAlertDialog(
@@ -43,6 +44,8 @@ void logOutAction(SharedPreferences sp) {
       ),
       MaterialButton(
         onPressed: () {
+          DateBaseHelper databaseHelper=DateBaseHelper.instance;
+          databaseHelper.deleteAllChats();
           CommonObj.loginModel=null;
           final AuthService authService = AuthService();
           authService.logOut();

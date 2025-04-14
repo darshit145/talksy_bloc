@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +23,7 @@ class ChatPage extends StatelessWidget {
   final String reciverTocken;
   final String cloudUsername;
   final SharedPreferences sp;
-  final String sender;
+  // final String sender;
   final String cloudUserPhoto;
   final User cloudUser;
 
@@ -30,11 +31,12 @@ class ChatPage extends StatelessWidget {
       {super.key,
       required this.cloudUser,
       required this.cloudUserPhoto,
-      required this.sender,
+      // required this.sender,
       required this.sp,
       required this.cloudUsername,
       required this.reciverTocken});
   final DateBaseHelper databaseHelper = DateBaseHelper.instance;
+  final TextEditingController textEditingController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     // Future.microtask(
@@ -43,36 +45,36 @@ class ChatPage extends StatelessWidget {
     //   },
     // );
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //   make the Api call
-          //0 Means the Cloud user is Offline and Have to Make the Api call  --- API Call
-          //1 means the user is online and have the connect to the web socket
-          //2 means the cloud  user runn the app in the background and have to sh0ow the Notification
-          if(true){
-            Message message=Message(id: "id", msg:" msg", from:" from", to:" to", dateSendingTime:" dateSendingTime", readStatus:1, day:" day", v:1);
-            // databaseHelper.insertRecent(message);
-            databaseHelper.getRecent();
-            context.read<ChatBloc>().add(
-              GetAllMessage()
-            );
-            return;
-          }
-          if (cloudUser.uActivestatus == 0) {
-            context.read<ChatBloc>().add(
-              SendMessage(
-                dateSendingTime: "2:18",
-                day: "Sunday",
-                from: CommonObj.loginModel!.newUser.id,
-                msg: "This is the ! Message from the Darshit 7",
-                to: cloudUser.id,
-              ),
-            );
-            return;
-          }
-
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     //   make the Api call
+      //     //0 Means the Cloud user is Offline and Have to Make the Api call  --- API Call
+      //     //1 means the user is online and have the connect to the web socket
+      //     //2 means the cloud  user runn the app in the background and have to sh0ow the Notification
+      //     if(true){
+      //       Message message=Message(id: "id", msg:" msg", from:" from", to:" to", dateSendingTime:" dateSendingTime", readStatus:1, day:" day", v:1);
+      //       // databaseHelper.insertRecent(message);
+      //       databaseHelper.getRecent();
+      //       context.read<ChatBloc>().add(
+      //         GetAllMessage()
+      //       );
+      //       return;
+      //     }
+      //     if (cloudUser.uActivestatus == 0) {
+      //       context.read<ChatBloc>().add(
+      //         SendMessage(
+      //           dateSendingTime: "2:18",
+      //           day: "Sunday",
+      //           from: CommonObj.loginModel!.newUser.id,
+      //           msg: "This is the ! Message from the Darshit 7",
+      //           to: cloudUser.id,
+      //         ),
+      //       );
+      //       return;
+      //     }
+      //
+      //   },
+      // ),
       backgroundColor: Color(0xFFeff1f2),
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -189,22 +191,31 @@ class ChatPage extends StatelessWidget {
             //   ),
             // ),
             Expanded(
-                child: ListView.separated(
-              itemBuilder: (context, index) {
-                if (index % 2 == 0) {
-                  return ReciverChat(
-                      senderPhotoUrl: cloudUserPhoto,
-                      msg: "mskhdfkndfjknsoigtsdkfnosgkdngsjdgnlkfdjglkg",
-                      time: " time");
-                }
-                return SenderChat(
-                    msg: "0202iuhiugyufkuvckufuyyvhjfu6y0msg", time: " time");
-              },
-              itemCount: 20,
-              separatorBuilder: (context, index) => SizedBox(
-                height: 6,
-              ),
-            )),
+                child: BlocBuilder<ChatBloc,ChatState>(builder: (context, state) {
+                  if(state.userMessage==null){
+                    return SizedBox();
+                  }else if(state.userMessage!.messages.isEmpty){
+                    return SizedBox();
+                  }
+                  return ListView.separated(
+                    itemBuilder: (context, index) {
+                      if (state.userMessage!.messages[index].from==CommonObj.loginModel!.newUser.id) {
+                        return SenderChat(
+                            msg: state.userMessage!.messages[index].msg, time: " time");
+
+                      }
+                      return ReciverChat(
+                          senderPhotoUrl: cloudUserPhoto,
+                          msg: state.userMessage!.messages[index].msg,
+                          time: " time");
+                    },
+                    itemCount: state.userMessage!.messages.length,
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 6,
+                    ),
+                  );
+                },)
+            ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8),
@@ -215,7 +226,7 @@ class ChatPage extends StatelessWidget {
                         child: MyTextField(
                             obscureText: false,
                             hintText: "Send",
-                            controller: TextEditingController())),
+                            controller: textEditingController)),
                     Container(
                         height: 40,
                         width: 40,
@@ -230,6 +241,23 @@ class ChatPage extends StatelessWidget {
                             highlightColor: Colors.grey,
                             onTap: () {
                               ///send the notification to the user b
+                              if(textEditingController.text.isEmpty){
+                                return;
+                              }
+
+                              if (cloudUser.uActivestatus == 0) {
+                                context.read<ChatBloc>().add(
+                                  SendMessage(
+                                    dateSendingTime: "2:18",
+                                    day: "Sunday",
+                                    from: CommonObj.loginModel!.newUser.id,
+                                    msg:textEditingController.text.toString().trim(),
+                                    to: cloudUser.id,
+                                  ),
+                                );
+                                textEditingController.clear();
+                                return;
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),

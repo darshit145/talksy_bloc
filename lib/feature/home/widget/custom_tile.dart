@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talksy_app/common/cash_image.dart';
+import 'package:talksy_app/feature/chat/domain/model/user_message.dart';
 import '../../../get_it.dart';
 import '../../../util/app_constantSP.dart';
 import '../../../util/color_const.dart';
 import '../../../util/font_family.dart';
+import '../../chat/controller/chat_bloc.dart';
+import '../../chat/domain/model/database_helper.dart';
 import '../../chat/screen/chat_page.dart';
 import '../domain/model/list_user.dart';
 
@@ -30,8 +34,22 @@ class CustomTile extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         splashColor: ColorConst.getDeviderColor(context),
-        onTap: () {
-          String email = sp.getString(AppConstSP.uaerEmail) ?? "";
+        onTap: ()async {
+          // String email = sp.getString(AppConstSP.uaerEmail) ?? "";
+          //i haVE  TO fatch the records from the Database
+          // final DateBaseHelper databaseHelper = DateBaseHelper.instance;
+          // List<Message> messages=await databaseHelper.getRecent();
+          // messages.removeWhere((element) {
+          //   if(element.from==cloudUser.id||element.to==cloudUser.id){
+          //     return false;
+          //   }
+          //   return true;
+          // },);
+          // print(messages.length);
+          // print(messages[0].msg);
+          //i have to Emit the Chats
+          context.read<ChatBloc>().add(GetOnlySelectedMessage(id: cloudUser.id));
+
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -39,7 +57,7 @@ class CustomTile extends StatelessWidget {
                   sp: it(),
                   cloudUserPhoto: photoUrl,
                   cloudUser: cloudUser,
-                  sender: email.split('@')[0],
+                  // sender: email.split('@')[0],
                   cloudUsername: titleText,
                   // tableName: generateChatTableName(email, subTitleText),
                   // tableName: generateChatTableName("dfachara8", "dfachara8"),

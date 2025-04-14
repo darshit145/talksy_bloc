@@ -59,7 +59,16 @@ class Message {
     day: json["day"],
     v: json["__v"],
   );
-
+  factory Message.fromJson2(Map<String, dynamic> json) => Message(
+    id:"",
+    msg: json["msg"],
+    from: json["fromU"],
+    to: json["toU"],
+    dateSendingTime: json["dateSendingTime"],
+    readStatus: int.parse(json["readStatus"]),
+    day: json["day"],
+    v: 0,
+  );
   Map<String, dynamic> toJson() => {
     "_id": id,
     "msg": msg,

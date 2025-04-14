@@ -126,10 +126,27 @@ class DateBaseHelper{
     await db.delete('topics', where: 'topic_name = ?', whereArgs: [nams]);
   }
 
-  Future<void> getRecent() async {
+  Future<List<Message>> getRecent() async {
     Database db = await instance.db;
     List<Map<String, dynamic>> maps = await db.query('chat');
+    return maps.map((e) {
+     return Message.fromJson2(e);
+    },).toList();
+    // return maps;
+  }
+  Future<void> getChatMessages({required String fromU, required String toU}) async {
+    Database db = await instance.db;
+    List<Map<String, dynamic>> maps = await db.query(
+      'chat',
+      where: 'fromU = ? AND toU = ?',
+      whereArgs: [fromU, toU],
+    );
     print(maps);
+  }
+
+  Future<void> deleteAllChats() async {
+    Database db = await instance.db;
+    await db.delete('chat');
   }
 
   // Future<List<Message>> getRecent() async {

@@ -8,7 +8,8 @@ class MyTextField extends StatefulWidget {
   final bool obscureText;
   final Widget? prefix;
   final TextInputType? keyboardType;
-  const MyTextField({super.key,this.keyboardType,this.prefix,required this.obscureText,required this.hintText,required this.controller});
+  int? maxLength;
+   MyTextField({super.key,this.keyboardType,this.prefix,required this.obscureText,required this.hintText,required this.controller,this.maxLength=null});
 
   @override
   MyTextFieldState createState() => MyTextFieldState();
@@ -50,7 +51,7 @@ class MyTextFieldState extends State<MyTextField> {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      maxLength:widget.prefix!=null?12: 30,
+      maxLength:widget.maxLength,
       placeholder: widget.hintText,
       placeholderStyle: TextStyle(
           fontSize: 14,
